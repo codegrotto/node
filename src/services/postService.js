@@ -2,32 +2,16 @@ const db = require('../models');
 
 class PostService {
 
-    getAll() {
-        try {
-            return db.posts.getAll();
-        } catch (err) {
-            throw {status: 500, message: 'Database offline'};
-        }
+    async getAll() {
+        return db.Post.findAll();
     }
 
-    getById(id) {
-        if (typeof id === 'undefined') {
-            throw {status: 400, message: 'No id provided'};
-        }
-        let post;
-        try {
-            post = db.posts.getById(id);
-        } catch (err) {
-            throw {status: 500, message: 'Database offline'};
-        }
-        if (!post) {
-            throw {status: 404, message: 'Post not found'};
-        }
-        return post;
+    async getById(id) {
+        return db.Post.findOne({where: {id}});
     }
 
-    insert(dataData) {
-        return db.posts.insert(dataData);
+    async insert(data) {
+        return db.Post.create(data);
     }
 
 }

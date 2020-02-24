@@ -3,28 +3,25 @@ const router = express.Router();
 
 const postService = require('../services/postService');
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        res.send(postService.getAll());
+        return res.send(await postService.getAll());
     } catch (err) {
         res.status(500).send({message: err.message});
     }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
-        const byId = postService.getById(Number(req.params.id));
-        console.log(byId);
-        res.send(byId);
+        res.send(await postService.getById(Number(req.params.id)));
     } catch (err) {
-        console.log(err);
-        res.status(err.status).send({message: err.message})
+        res.status(500).send({message: err.message});
     }
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        res.send(postService.insert(req.body));
+        res.send(await postService.insert(req.body));
     } catch (err) {
         res.status(500).send({message: err.message});
     }
